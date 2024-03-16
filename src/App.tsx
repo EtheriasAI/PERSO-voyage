@@ -4,7 +4,10 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import Home from './page/Home';
 import Article from './page/Article';
+import { createTheme, ThemeProvider } from '@mui/material';
 
+// Define your MUI theme
+const theme = createTheme();
 
 function App() {
   return (

@@ -10,6 +10,8 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
 import { setData } from '../store/store';
+import { Grid } from "@mui/material";
+import './Entries.css';
 
 const Entries: React.FC = () => {
     const [escaleData, setEscaleData] = useState<any[]>([]);
@@ -35,35 +37,36 @@ const Entries: React.FC = () => {
             }));
             console.log(escaleDataArray);
             setEscaleData(escaleDataArray);
-            setData(escaleData);
+            setData(escaleDataArray);
         };
 
         fetchEscaleData();
-    }, []); // Run only once on component mount
+    }, []); 
     return (
         <div>
           <h2>Documents</h2>
-          {escaleData.map((data, index) => {
-            return (
-              <>
-              <Link key={index} to={`/article?index=${index}`} style={{ textDecoration: 'none' }}>
-                <Card sx={{ maxWidth: 345, m: 2 }}>
-                  <CardMedia
-                    component="img"
-                    height="140"
-                    image={data.urlImage}
-                    alt="Nicola Sturgeon on a TED talk stage"
-                  />
-                  <CardContent>
-                    <Typography variant="body2" color="text.secondary" component="p">
-                      {data.nomVille}
-                      {data.NomArticle}
-                    </Typography>
-                  </CardContent>
-                </Card></Link>
-              </>
-            );
-          })}
+          <Grid container spacing={3}>
+            {escaleData.map((data, index) => (
+              <Grid item key={index} xs={3}>
+                <Link to={`/article?index=${index}`} style={{ textDecoration: 'none' }}>
+                  <Card sx={{ maxWidth: 345, m: 2 }}>
+                    <CardMedia
+                      component="img"
+                      height="140"
+                      image={data.imgPreview}
+                      alt="Nicola Sturgeon on a TED talk stage"
+                    />
+                    <CardContent>
+                      <Typography variant="body2" color="text.secondary" component="p">
+                        {data.nomVille}
+                        {data.NomArticle}
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Link>
+              </Grid>
+            ))}
+          </Grid>
         </div>
       );
 }
