@@ -1,17 +1,20 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import NewEntry from './SaveNewEntry';
-import Entries from './Entries';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+import Home from './page/Home';
+import Article from './page/Article';
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <Entries />
-        <NewEntry />
-      </header>
-    </div>
+
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/article" element={<Article />} />
+        </Routes>
+      </Router>
   );
 }
 

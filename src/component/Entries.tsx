@@ -3,8 +3,13 @@ import 'firebase/auth';
 import 'firebase/firestore';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
-import { IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle } from '@ionic/react';
 import React from 'react';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Typography from '@mui/material/Typography';
+import { Link } from 'react-router-dom';
+import { setData } from '../store/store';
 
 const Entries: React.FC = () => {
     const [escaleData, setEscaleData] = useState<any[]>([]);
@@ -30,31 +35,36 @@ const Entries: React.FC = () => {
             }));
             console.log(escaleDataArray);
             setEscaleData(escaleDataArray);
+            setData(escaleData);
         };
 
         fetchEscaleData();
     }, []); // Run only once on component mount
-    /*<div key={index}>
-                    <h2>{data.NomArticle}</h2>
-                    <p>{data.contenuArticleParagraphe.join(", ")}</p>
-                    <p>{data.nomVille}</p>
-                    <img src={data.urlImage} alt="Escale Image" />
-                </div>*/
-                
-    return(
+    return (
         <div>
-            <h2>Documents</h2>
-            {escaleData.map((data, index) => (
-                <IonCard>
-                    <img alt="Silhouette of mountains" src={data.urlImage} />
-                    <IonCardHeader>
-                        <IonCardTitle>{data.nomVille}</IonCardTitle>
-                        <IonCardSubtitle>{data.NomArticle}</IonCardSubtitle>
-                    </IonCardHeader>
-                
-                </IonCard>
-            ))}
+          <h2>Documents</h2>
+          {escaleData.map((data, index) => {
+            return (
+              <>
+              <Link key={index} to={`/article?index=${index}`} style={{ textDecoration: 'none' }}>
+                <Card sx={{ maxWidth: 345, m: 2 }}>
+                  <CardMedia
+                    component="img"
+                    height="140"
+                    image={data.urlImage}
+                    alt="Nicola Sturgeon on a TED talk stage"
+                  />
+                  <CardContent>
+                    <Typography variant="body2" color="text.secondary" component="p">
+                      {data.nomVille}
+                      {data.NomArticle}
+                    </Typography>
+                  </CardContent>
+                </Card></Link>
+              </>
+            );
+          })}
         </div>
-    );
+      );
 }
 export default Entries;
