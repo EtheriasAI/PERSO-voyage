@@ -1,0 +1,32 @@
+.comments{
+    background-color: #f9f9f9;
+    top:0;
+    .sendComment{
+        margin: 1vw;
+        padding: 1vw;
+        border-radius: 15px;
+        background-color: #f1f1f1;
+    }
+    .comment{
+        background-color: #fff;
+        margin: 1vw;
+        border-radius: 15px;
+        padding: 5px;
+        p{
+            padding: 5px;
+        }
+    }
+}
+
+::-webkit-scrollbar {
+    width: 10px; /* width of the scrollbar */
+  }
+  
+  ::-webkit-scrollbar-track {
+    background-color: #f1f1f1; /* color of the scrollbar track */
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #888; /* color of the scrollbar thumb */
+    border-radius: 5px; /* roundness of the scrollbar thumb */
+  }

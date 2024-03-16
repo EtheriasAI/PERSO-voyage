@@ -45,7 +45,7 @@ const Entries: React.FC = () => {
     return (
         <div>
           <h2>Documents</h2>
-          <Grid container spacing={3}>
+          <Grid container spacing={3} justifyContent="space-evenly" style={{padding:"1vw"}}>
             {escaleData.map((data, index) => (
               <Grid item key={index} xs={3}>
                 <Link to={`/article?index=${index}`} style={{ textDecoration: 'none' }}>

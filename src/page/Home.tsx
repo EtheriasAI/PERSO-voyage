@@ -2,6 +2,7 @@ import { ref } from "firebase/storage";
 import Entries from "../component/Entries";
 import NewEntry from "../component/SaveNewEntry";
 import React from "react";
+import "./Home.css";
 
 const Home: React.FC = () => {
 
@@ -10,12 +11,9 @@ const Home: React.FC = () => {
 
   return(
     <div className="App">
-      <button onClick={() => setAddEntryModal(!addEntryModal)}>open/close</button>
+      <button onClick={() => setAddEntryModal(true)}>open/close</button>
       <Entries />
-      {addEntryModal ? <NewEntry shown={addEntryModal}
-        close={() => {
-          setAddEntryModal(false);
-        }} /> : null}
+      {addEntryModal ? <NewEntry closeModal={() => setAddEntryModal(false)} /> : null}
       
     </div>
   );

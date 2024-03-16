@@ -6,14 +6,17 @@ import 'firebase/firestore';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, doc, setDoc } from 'firebase/firestore';
 import { getStorage, ref as storageRefBug , uploadBytes, getDownloadURL } from 'firebase/storage';
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, IconButton, TextField } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
-interface IProps {
-  shown : boolean,
-  close:() => void
+interface NewEntryProps {
+  closeModal: () => void;
 }
+
+
 type MixedList = string | File;
-const NewEntry: React.FC<IProps> = (props) => {
+const NewEntry: React.FC<NewEntryProps> = (props) => {
   
     const [imagePar, setImagePar] = useState<File | null>(null);
     const [imageUrlPar, setImageUrlPar] = useState<string>('');
@@ -80,37 +83,38 @@ const NewEntry: React.FC<IProps> = (props) => {
         } catch (error) {
             console.error('Error uploading image:', error);
         }
-        let parList : string[] = [];
-        myList.forEach(
-          async (item)=>{
+        try {
+          const parList: string[] = [];
+        
+          for (const item of myList) {
             if (typeof item === 'string') {
               parList.push(item);
             } else if (item instanceof File) {
               try {
-                await uploadBytes(storageRef, item!);
-                downloadURL = await getDownloadURL(storageRef);
+                await uploadBytes(storageRef, item);
+                const downloadURL = await getDownloadURL(storageRef);
                 parList.push(downloadURL);
               } catch (error) {
-                  console.error('Error uploading image:', error);
+                console.error('Error uploading image:', error);
               }
             }
           }
-        );
-
-        const newDocumentData = {
-            NomArticle:NomArticle,
+        
+          const newDocumentData = {
+            NomArticle: NomArticle,
             contenuArticleParagraphe: parList,
             nomVille: nomVille,
             imgPreview: downloadURL
-        };
-
-        await setDoc(doc(firestore, 'escale', nomVille.toLowerCase().replace(/[^a-z0-9]/g, '')), newDocumentData)
-        .then(() => {
-            console.log('New document added successfully to Firestore');
-        })
-        .catch((error: any) => {
-            console.error('Error adding new document to Firestore:', error);
-        });
+          };
+          await setDoc(
+            doc(firestore, 'escale', nomVille.toLowerCase().replace(/[^a-z0-9]/g, '')),
+            newDocumentData
+          );
+        
+          props.closeModal();
+        } catch (error) {
+          console.error('Error adding new document to Firestore:', error);
+        }
 
 
       }
@@ -124,26 +128,50 @@ const NewEntry: React.FC<IProps> = (props) => {
         appId: "1:824729232108:web:f898ba64078f0c6e30bbc9"
     };
     
-    return props.shown ? (
-    <div
-      className="modal-backdrop"
-      onClick={() => {
-        props.close();
-      }}
-    >
-      <div className='newEntryModal'
-           onClick={e => {
-            e.stopPropagation();
-          }}>
+    return (
+      <div className='newEntryModal'>
+        <div className="content">
+        <Grid container spacing={2} alignItems="center" style={{ padding: "8px" }}>
+          <Grid item xs={6}>
+            <TextField
+                id="standard-basic"
+                label="Nom Ville"
+                variant="standard"
+                value={nomVille}
+                onChange={(e) => setNomVille(e.target.value)}
+              />
+          </Grid>
+          <Grid item xs={6} container justifyContent="flex-end">
+            <IconButton onClick={props.closeModal} edge="end">
+              <CloseIcon />
+            </IconButton>
+          </Grid>
+        </Grid>
         <Grid container >
-          <Grid item xs={12}>
-            <label htmlFor="nomVille">Image preview:</label>
-            <input type="file" onChange={handleImageChange} />
-          </Grid>
-          <Grid item xs={12}>
-            <label htmlFor="nomVille">Nom ville:</label>
-            <input type="text" value={nomVille} onChange={(e) => setNomVille(e.target.value)} />
-          </Grid>
+          <Grid item xs={6}>
+            <Grid item xs={6}>
+             <label htmlFor="image preview">Image preview:</label>
+            </Grid>
+            <Grid item xs={6}>
+            <input
+              accept="image/*"
+              id="contained-button-file"
+              type="file"
+              style={{ display: 'none' }}
+              onChange={handleImageChange}
+            />
+            <label htmlFor="contained-button-file">
+              <IconButton component="span">
+                <CloudUploadIcon fontSize="large" />
+              </IconButton>
+            </label>
+            </Grid>
+          </Grid>            
+          {image && (
+            <Grid item xs={6}>
+              <img src={URL.createObjectURL(image)} alt="" style={{ width: '15vw', height: '8vh' }} />
+            </Grid>
+          )}
           <Grid item xs={12}>
             <label htmlFor="NomArticle">Nom article:</label>
             <input type="text" value={NomArticle} onChange={(e) => setNomArticle(e.target.value)} />
@@ -156,23 +184,30 @@ const NewEntry: React.FC<IProps> = (props) => {
         {myList.map((item, index) => (
           <div key={index}>
             {typeof item === 'string' ? (
-              <input type="text" value={item} onChange={(e) => handleInputChange(index, e.target.value)} />
+              
+              <TextField
+                id={`outlined-basic-${index}`} 
+                variant="outlined"
+                value={item}
+                onChange={(e) => handleInputChange(index, e.target.value)}
+                style={{ width: '100%' }} // Set input width to 100% of its container
+              />
+              
             ) : (
               <img src={URL.createObjectURL(item)} alt={`Image ${index}`} style={{ width: '15vw', height: '8vh' }} />
             )}
           </div>
         ))}
       </div>
-        <Box>
-          <Grid container justifyContent="center">
-
+      <Box>
+        <Grid container justifyContent="center">
           <button className="upload" onClick={handleUpload}>
             Upload article
           </button>
         </Grid>
-      </Box>
-      </div>
-    </div>) : null;
+      </Box></div>
+    </div>
+    );
 }
 export default NewEntry;
 
