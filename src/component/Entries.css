@@ -1,4 +1,15 @@
 .Entries{
     width: 100%;
     height: 100%;
+
+}
+@keyframes fadeInFromBottom {
+  from {
+    opacity: 0;
+    transform: translateY(20px); /* Move the card down */
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0); /* Move the card up */
+  }
 }

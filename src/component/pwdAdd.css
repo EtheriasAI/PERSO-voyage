@@ -1,0 +1,40 @@
+.pwdAddModal{
+    position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+    
+
+    .content{
+        align-items: flex-start;
+        background-color: #ffffff;
+        width: 30vw;
+        height: 20vh;
+        border-radius: 15px;
+        padding: 2vw;
+
+        input {
+          width: 100%;
+          padding: 8px;
+          margin-bottom: 16px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+        }
+        
+        .submit {
+          padding: 8px 16px;
+          background-color: #ccc;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+        }
+        
+        .submit:hover {
+          background-color: #ddd;
+        }
+
+    }
+    
+}
+

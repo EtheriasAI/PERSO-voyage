@@ -20,11 +20,18 @@ const Entries: React.FC = () => {
 
     return (
         <div>
+          <h1 style={{ textAlign: "center", margin:"1vw" }}>Consulter les étapes :</h1>
           <Grid container spacing={3} justifyContent="space-evenly" style={{padding:"1vw"}}>
             {escaleData.map((data, index) => (
-              <Grid item key={index} xs={3}>
+              <Grid item key={index} xs={3} sx={{ animation: 'fadeInFromBottom 1s ease forwards',}}>
                 <Link to={`/article?index=${index}`} style={{ textDecoration: 'none' }}>
-                  <Card sx={{ maxWidth: 345, m: 2 }}>
+                  <Card className="cards"
+                  sx={{ maxWidth: 345, m: 2,
+                    transition: 'transform 0.4s ease', 
+                    '&:hover': { 
+                      transform: 'scale(1.05)', 
+                      transitionDelay: '0s', 
+                    } }}>
                     <CardMedia
                       component="img"
                       height="140"

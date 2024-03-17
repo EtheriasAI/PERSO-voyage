@@ -1,8 +1,46 @@
 .App {
-    background-color: #f9f9f9;
-    width: 100%;
-    height: 100%;
-    margin: 0 !important;
-    padding: 0 !important;
+  background-color: #f9f9f9;
+  width: 100%;
+  overflow-y: auto; /* Enable vertical scrolling for the entire page */
+  height: 100vh;
+  margin: 0 !important;
+  padding: 0 !important;
+  opacity: 0; /* Start with opacity 0 */
+  animation: fadeInAnimation 1s ease forwards; 
+  .screen {
+    flex-direction: column;
+    height: 100%; /* Take up the full height of the page */
   }
   
+  .upper-half {
+    height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .lower-half {
+    height:100%;
+    /* Add styles as needed */
+  }
+  position: absolute;
+    top: 0;
+    bottom: 0;
+  .add{
+    transition: transform 0.3s ease;
+  }
+  .add:hover{
+    transition-delay: 0.2s;
+    transform: scale(1.2);
+  }
+}
+
+
+@keyframes fadeInAnimation {
+  from {
+    opacity: 0; 
+  }
+  to {
+    opacity: 1; 
+  }
+}

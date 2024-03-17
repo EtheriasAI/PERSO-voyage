@@ -1,6 +1,7 @@
 // PasswordPage.js
 import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
+import './Password.css'
 
 const PasswordPage = ({ setPasswordCorrect } :any) => {
   const [password, setPassword] = useState('');
@@ -25,7 +26,7 @@ const PasswordPage = ({ setPasswordCorrect } :any) => {
 
   return (
     <div>
-      <h2>Password Page</h2>
+      <h2>Entrer le mot de passe</h2>
       <form onSubmit={handleSubmit}>
         <input
           type="password"
@@ -33,9 +34,10 @@ const PasswordPage = ({ setPasswordCorrect } :any) => {
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Enter password"
         />
-        <button type="submit">Submit</button>
+        <button className='submit' type="submit">Submit</button>
       </form>
     </div>
+
   );
 };
 

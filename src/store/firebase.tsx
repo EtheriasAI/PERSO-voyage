@@ -2,7 +2,7 @@ import { setData } from "./store";
 import { initializeApp } from 'firebase/app';
 import { Comments } from "../page/Article";
 import firebase from 'firebase/compat/app';
-import { getFirestore , doc , setDoc , collection , getDocs } from 'firebase/firestore';
+import { getFirestore , doc , setDoc , collection , getDocs, Timestamp } from 'firebase/firestore';
 import { MixedList } from "../component/SaveNewEntry";
 import { getStorage, ref as storageRefBug , uploadBytes, getDownloadURL } from 'firebase/storage';
 
@@ -41,27 +41,35 @@ const getAllComments = async (nom:string,setComments: (arg0: Comments[]) => void
     let finalComments : Comments[]= [];
     pivot.forEach(
       (e)=>{
-        finalComments.push({author:e.author, idArticle:e.idArticle ,comment: e.comment});
+        const date = (e.date as Timestamp).toDate();
+        finalComments.push({author:e.author, idArticle:e.idArticle ,comment: e.comment,date:date});
       }
     );
 
+    //finalComments.sort((a: Comments, b: Comments) => a.date.getTime() - b.date.getTime());
+    const filteredDates = finalComments.sort((a, b) => {
+        const dateA = new Date(a.date);
+        const dateB = new Date(b.date);
+        return dateA.getTime() - dateB.getTime();
+    });
     setComments(finalComments);
 
   }
 
-const saveComment = async (nomArticle:string,author:string,comment:string) =>{
+const saveComment = async (nomArticle:string,author:string,comment:string,date:Date) =>{
     const cf = initializeApp(firebaseConfig);
     firebase.initializeApp(firebaseConfig);
     const firestore = getFirestore(cf);
     const newDocumentData = {
         idArticle: nomArticle,
         author: author,
-        comment: comment
+        comment: comment,
+        date:date
     };
 
     try{
       await setDoc(
-      doc(firestore, 'comments', author.toLowerCase().replace(/[^a-z0-9]/g, '')),newDocumentData
+      doc(firestore, 'comments', (author.toLowerCase().replace(/[^a-z0-9]/g, '')+date)),newDocumentData
     );
   } catch (error) {
     console.error('Error adding new document to Firestore:', error);

@@ -12,7 +12,8 @@ import { getAllComments, saveComment } from "../store/firebase";
 interface Comments{
   author : string,
   comment: string,
-  idArticle: string
+  idArticle: string,
+  date:Date
 }
 
 const Article: React.FC = () => {
@@ -67,19 +68,34 @@ const Article: React.FC = () => {
 
     const handleComment = async () => {
       let nom = data.NomArticle || "";
-      saveComment(nom,author,comment);
-  
+      try{await saveComment(nom,author,comment,new Date());
+      getAllComments(data.NomArticle, setComments);
+      setComment('');
+      setAuthor('');
+      }catch(e:any){}
     };
 
-    return (
+    
+    const formatDateTime = (date: Date): string => {
+      console.log(date)
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const day = date.getDate().toString().padStart(2, '0');
+      const hour = date.getHours().toString().padStart(2, '0');
+      const minute = date.getMinutes().toString().padStart(2, '0');
+  
+      return `${month}/${day} ${hour}:${minute}`;
+  };
 
-        <Grid container style={{ overflow: 'hidden' }}>
-            <Grid item xs={0} style={{position:"fixed",margin: '10px'}}>
+    return (
+        
+        <Grid className="article" container style={{ overflow: 'hidden' }}>
+            <Grid item xs={0} style={{position:"fixed", bottom:"0",margin: '10px'}}>
               <Link to="/">
-                <button style={{ borderRadius: '50%', cursor: 'pointer', backgroundColor: '#e0e0e0', border: 'none' }}><HomeIcon style={{fontSize:"50px",color:"#fff",padding:"5px"}} /></button>
+                <button className="home" style={{ borderRadius: '50%', cursor: 'pointer', backgroundColor: '#e0e0e0', border: 'none' }}><HomeIcon style={{fontSize:"50px",color:"#fff",padding:"5px"}} /></button>
               </Link>
             </Grid>
             <Grid item xs={8} style={{ overflow: 'auto', maxHeight: '100vh'  }}>
+            <img src={data.imgPreview} style={{ width: "100%", height: "20vh", objectFit: 'cover' }} alt="Article" className="article-image" />
             <h1 style={{fontSize:"3rem", textAlign:"center", padding:"1vw"}}>{name}</h1>
             <br />
             {par &&
@@ -93,18 +109,31 @@ const Article: React.FC = () => {
                           {comments &&
                                     comments.map((comment, index) => (
                                       <div className="comment">
-                                        <p style={{fontSize:"1.2rem"}}>{comment.author} :</p>
+                                        <Grid container justifyContent="space-between" style={{padding:'10px'}}>
+                                          <Grid item xs={6} style={{fontSize:"1.2rem"}}>
+                                            {comment.author} :
+                                          </Grid>
+                                          <Grid item xs={6} style={{ textAlign: 'right' }}>
+                                            {formatDateTime(comment.date)}
+                                          </Grid>
+                                        </Grid>
                                         <p>{comment.comment}</p>
                                       </div>
                                     ))}
                           </div>
                       <Grid style={{ position: "absolute", bottom: 0, right:0, left:0}}>
                         <div className="sendComment">
-                          <Grid item xs={12}>
-                            <label>Name : </label>
-                            <TextField id="standard-basic" variant="standard" onChange={(e) => setAuthor(e.target.value)} value={author} />
+                          <Grid item xs={12} style={{marginBottom:"1vh"}}>
+                            <Grid container alignItems="stretch">
+                              <Grid item xs={2} style={{ display: 'flex', alignItems: 'flex-end' }}>
+                                <label style={{ marginBottom: 0 }}>Name : </label>
+                              </Grid>
+                              <Grid item xs={10}>
+                                <TextField id="standard-basic" variant="standard" onChange={(e) => setAuthor(e.target.value)} value={author} />
+                              </Grid> 
+                            </Grid>         
                           </Grid>
-                          <Grid item xs={12}>
+                          <Grid item xs={12} style={{marginBottom:"5px"}}>
                             <label>Comment : </label>
                           </Grid>
                           <Grid container spacing={6} alignItems="center" >
@@ -112,7 +141,7 @@ const Article: React.FC = () => {
                               <textarea onChange={(e) => setComment(e.target.value)} value={comment} style={{ borderRadius:'10px' ,width:'100%',border: 'none', outline: 'none' , height: '5vh', padding: '0.75vw', resize:'none' }} ></textarea>
                             </Grid>
                             <Grid item xs={2}>
-                              <SendIcon onClick={handleComment} style={{ cursor: 'pointer' }} />
+                              <SendIcon className="send-icon" onClick={handleComment} style={{ cursor: 'pointer' }} />
                             </Grid>
                           </Grid>
                         </div>
