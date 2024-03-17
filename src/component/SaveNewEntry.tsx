@@ -1,42 +1,29 @@
 import { useState } from "react";
-import firebase from 'firebase/compat/app';
 import 'firebase/auth';
 import './SaveNewEntry.css';
 import 'firebase/firestore';
-import { initializeApp } from 'firebase/app';
-import { getFirestore, doc, setDoc } from 'firebase/firestore';
-import { getStorage, ref as storageRefBug , uploadBytes, getDownloadURL } from 'firebase/storage';
 import { Box, Grid, IconButton, TextField } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { upload } from "../store/firebase";
 
 interface NewEntryProps {
   closeModal: () => void;
 }
 
 
-type MixedList = string | File;
+export type MixedList = string | File;
 const NewEntry: React.FC<NewEntryProps> = (props) => {
   
-    const [imagePar, setImagePar] = useState<File | null>(null);
-    const [imageUrlPar, setImageUrlPar] = useState<string>('');
-
     const [nomVille,setNomVille] = useState<string>('');
     const [NomArticle,setNomArticle] = useState<string>('');
-    const [paragraphes,setParagraphes] = useState<string[]>(['']);
 
     const [myList, setMyList] = useState<MixedList[]>([]);
 
-    const addItemToFileList = (item: File | string) => {
-      setMyList(prevList => [...prevList, item]);
-    };
 
     const [image, setImage] = useState<File | null>(null);
     const [imageUrl, setImageUrl] = useState<string>('');
 
-    const [paragraphs, setParagraphs] = useState<string[]>([]);
-    const [newParagraph, setNewParagraph] = useState<string>('');
-  
     const addImage = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
         if (files && files.length > 0) {
@@ -67,66 +54,12 @@ const NewEntry: React.FC<NewEntryProps> = (props) => {
       };
 
     const handleUpload = async () =>{
-      console.log(myList)
-        const cf = initializeApp(firebaseConfig);
-        firebase.initializeApp(firebaseConfig);
-        const firestore = getFirestore(cf);
-
-        let downloadURL = "";
-        const storage = getStorage();
-        const storageRef : any = storageRefBug(storage, `images/${image!.name}`);
-        
-        try {
-            await uploadBytes(storageRef, image!);
-            downloadURL = await getDownloadURL(storageRef);
-            console.log('Image uploaded successfully. Download URL:', downloadURL);
-        } catch (error) {
-            console.error('Error uploading image:', error);
-        }
-        try {
-          const parList: string[] = [];
-        
-          for (const item of myList) {
-            if (typeof item === 'string') {
-              parList.push(item);
-            } else if (item instanceof File) {
-              try {
-                await uploadBytes(storageRef, item);
-                const downloadURL = await getDownloadURL(storageRef);
-                parList.push(downloadURL);
-              } catch (error) {
-                console.error('Error uploading image:', error);
-              }
-            }
-          }
-        
-          const newDocumentData = {
-            NomArticle: NomArticle,
-            contenuArticleParagraphe: parList,
-            nomVille: nomVille,
-            imgPreview: downloadURL
-          };
-          await setDoc(
-            doc(firestore, 'escale', nomVille.toLowerCase().replace(/[^a-z0-9]/g, '')),
-            newDocumentData
-          );
-        
-          props.closeModal();
-        } catch (error) {
-          console.error('Error adding new document to Firestore:', error);
-        }
-
-
-      }
-
-    const firebaseConfig = {
-        apiKey: "AIzaSyCLTqbIw4mGorqYkb92wZk8bfHIumOX94o",
-        authDomain: "test-75b5f.firebaseapp.com",
-        projectId: "test-75b5f",
-        storageBucket: "test-75b5f.appspot.com",
-        messagingSenderId: "824729232108",
-        appId: "1:824729232108:web:f898ba64078f0c6e30bbc9"
-    };
+      try{
+        await upload(image!,myList,NomArticle,nomVille);
+        props.closeModal();
+      }catch(error){}
+      
+    }
     
     return (
       <div className='newEntryModal'>
@@ -210,4 +143,3 @@ const NewEntry: React.FC<NewEntryProps> = (props) => {
     );
 }
 export default NewEntry;
-

@@ -1,4 +1,3 @@
-import { ref } from "firebase/storage";
 import Entries from "../component/Entries";
 import NewEntry from "../component/SaveNewEntry";
 import React from "react";

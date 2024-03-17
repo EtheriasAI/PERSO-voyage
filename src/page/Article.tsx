@@ -2,14 +2,12 @@ import { Link, useSearchParams } from "react-router-dom";
 import { getData } from '../store/store';
 import { useEffect, useState } from "react";
 import { Box, Grid, TextField } from "@mui/material";
-import firebase from 'firebase/compat/app';
 import 'firebase/auth';
 import 'firebase/firestore';
-import { initializeApp } from 'firebase/app';
-import { getFirestore , doc , setDoc , collection , getDocs } from 'firebase/firestore';
 import SendIcon from '@mui/icons-material/Send';
 import './Article.css';
 import HomeIcon from '@mui/icons-material/Home';
+import { getAllComments, saveComment } from "../store/firebase";
 
 interface Comments{
   author : string,
@@ -41,7 +39,6 @@ const Article: React.FC = () => {
     const [comments, setComments] = useState<Comments[]>();
               
     useEffect(() => {
-        console.log("Index:", index);
         let datas : any[]= getData();
         setData(datas[parseInt(index!)]);
         
@@ -49,31 +46,10 @@ const Article: React.FC = () => {
 
     useEffect(()=>{
       display(data);
-      getAllComments(data.NomArticle);
+      getAllComments(data.NomArticle, setComments);
     },[data]);
       
-    const getAllComments = async (nom:string) => {
-      console.log("salut")
-      const app = initializeApp(firebaseConfig);
-      const firestore = getFirestore(app);
-      const querySnapshot = await getDocs(collection(firestore, 'comments'));
-      const allComments = querySnapshot.docs.map(doc => ({
-          ...doc.data()
-      }));
-      console.log(nom)
-      console.log(allComments)
-      let pivot = allComments.filter(comment => comment.idArticle === nom);
-      let finalComments : Comments[]= [];
-      pivot.forEach(
-        (e)=>{
-          finalComments.push({author:e.author, idArticle:e.idArticle ,comment: e.comment});
-        }
-      );
 
-      setComments(finalComments);
-  
-      console.log(finalComments);
-    }
 
     const display = (data:any) =>{
         setName(data.NomArticle);
@@ -88,33 +64,10 @@ const Article: React.FC = () => {
         }
     };
     
-    const firebaseConfig = {
-        apiKey: "AIzaSyCLTqbIw4mGorqYkb92wZk8bfHIumOX94o",
-        authDomain: "test-75b5f.firebaseapp.com",
-        projectId: "test-75b5f",
-        storageBucket: "test-75b5f.appspot.com",
-        messagingSenderId: "824729232108",
-        appId: "1:824729232108:web:f898ba64078f0c6e30bbc9"
-    };
-    const handleComment = async () => {
-      
-      const cf = initializeApp(firebaseConfig);
-      firebase.initializeApp(firebaseConfig);
-      const firestore = getFirestore(cf);
-      console.log(data);
-      const newDocumentData = {
-          idArticle: data.NomArticle || "",
-          author: author,
-          comment: comment
-      };
 
-      try{
-        await setDoc(
-        doc(firestore, 'comments', author.toLowerCase().replace(/[^a-z0-9]/g, '')),newDocumentData
-      );
-    } catch (error) {
-      console.error('Error adding new document to Firestore:', error);
-    }
+    const handleComment = async () => {
+      let nom = data.NomArticle || "";
+      saveComment(nom,author,comment);
   
     };
 
@@ -170,3 +123,4 @@ const Article: React.FC = () => {
           );
 }
 export default Article;
+export type { Comments };
