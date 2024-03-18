@@ -11,12 +11,22 @@ import { Grid } from "@mui/material";
 import './Entries.css';
 import { fetchEscaleData } from "../store/firebase";
 
-const Entries: React.FC = () => {
+interface EntryProps {
+  refresh: () => void;
+  rValue: boolean;
+}
+
+const Entries: React.FC<EntryProps> = (props) => {
     const [escaleData, setEscaleData] = useState<any[]>([]);
 
     useEffect(() => {
       fetchEscaleData(setEscaleData);
     }, []); 
+
+    useEffect(() => {
+      fetchEscaleData(setEscaleData);
+      props.refresh();
+    }, [props.rValue]); 
 
     return (
         <div>

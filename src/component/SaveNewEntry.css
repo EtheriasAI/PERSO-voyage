@@ -13,7 +13,20 @@
         height: 80vh;
         border-radius: 15px;
         padding: 2vw;
+
+        .addPar{
+            color:#707070;
+            
+            border-radius: 50%;
+            
+        }
     
+        .addPar:hover{
+            
+            border-radius: 50%;
+            background-color: #F5F5F5;
+        }
+
         .select{
             align-items: center;   
             display: flex;
@@ -27,12 +40,26 @@
         .upload{
             position: absolute;
             bottom: 20px;
-                
+            background-color: #ccc;
+            color: #fff; 
+            padding: 10px 20px; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            font-size: 16px;
+            transition: transform 0.3s ease;
         }
+
+        .upload:hover{
+            background-color: #ddd;
+            transition-delay: 0.2s;
+            transform: scale(1.2);
+        }
+
     
         .inputArticle{
             height:30vh;
-            overflow-y: auto;
+            overflow-y: none;
             input{
                 width:66vw;
             }

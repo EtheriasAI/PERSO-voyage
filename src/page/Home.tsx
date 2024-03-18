@@ -10,8 +10,7 @@ const Home: React.FC = () => {
 
   const [addEntryModal, setAddEntryModal] = React.useState(false);
   const [pwdAddModal, setPwdAddModal] = React.useState(false);
-
-  let dateTime = new Date()
+  const [refresh,setRefresh] = React.useState(false);
 
   return(
     <div className="App">
@@ -20,10 +19,21 @@ const Home: React.FC = () => {
           <Map />
         </div>
         <div className="lower-half">
-          <Entries />
+          <div className="presentation">
+          <div className="text">
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam convallis nibh eu convallis posuere.
+              Integer sit amet tempor nulla. Quisque gravida vehicula orci, nec commodo elit placerat at.
+            </p>
+          </div>
+          <div className="image">
+            <img src="foto1.jpeg" alt="Round Picture" />
+          </div>
+          </div>
+          <Entries refresh={() => setRefresh(false)} rValue={refresh} />
           <button className="add" onClick={() => setPwdAddModal(true) } style={{ bottom:0, position:"fixed", margin: '10px', borderRadius: '50%', cursor: 'pointer', backgroundColor: '#e0e0e0', border: 'none' }} ><AddIcon style={{fontSize:"50px",color:"#fff",padding:"5px"}} /></button>
           {pwdAddModal ? <PwdAdd closeModal={() => setPwdAddModal(false)} openModal={() => setAddEntryModal(true)} /> : null}
-          {addEntryModal ? <NewEntry closeModal={() => setAddEntryModal(false)} /> : null}
+          {addEntryModal ? <NewEntry closeModal={() => setAddEntryModal(false)} refresh={() => setRefresh(true)} /> : null}
           
         </div>
       </div>

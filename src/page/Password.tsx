@@ -7,7 +7,7 @@ const PasswordPage = ({ setPasswordCorrect } :any) => {
   const [password, setPassword] = useState('');
   const [redirect, setRedirect] = useState(false);
 
-  const pwd = 'deliveryservices';
+  const pwd = 'delivery';
 
   const handleSubmit = (e:any) => {
     e.preventDefault();

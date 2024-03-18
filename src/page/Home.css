@@ -21,7 +21,28 @@
   
   .lower-half {
     height:100%;
-    /* Add styles as needed */
+    .presentation{
+      background-color: #00f;
+      .container {
+        display: flex;
+        height: 40vh;
+      }
+      
+      .text {
+        flex: 1; /* Take up remaining space */
+        padding: 20px;
+      }
+      
+      .image {
+        padding: 20px;
+      }
+      
+      .image img {
+        border-radius: 50%; /* Make the image round */
+        width: 100px; /* Adjust the width as needed */
+        height: 100px; /* Adjust the height as needed */
+      }
+    }
   }
   position: absolute;
     top: 0;
