@@ -10,13 +10,13 @@
     transform: scale(1.2);
   }
   .comments{
-    background-color: #bbb;
+    background-color: #eee;
     top:0;
     .sendComment{
         margin: 1vw;
         padding: 1vw;
         border-radius: 15px;
-        background-color: #aaa;
+        background-color: #ccc;
         .send-icon {
           transition: transform 0.3s ease;
         }

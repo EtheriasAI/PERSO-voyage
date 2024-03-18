@@ -1,6 +1,6 @@
 import { setData } from "./store";
 import { initializeApp } from 'firebase/app';
-import { Comments } from "../page/Article";
+import Article, { Comments } from "../page/Article";
 import firebase from 'firebase/compat/app';
 import { getFirestore , doc , setDoc , collection , getDocs, Timestamp } from 'firebase/firestore';
 import { MixedList } from "../component/SaveNewEntry";
@@ -8,15 +8,16 @@ import { getStorage, ref as storageRefBug , uploadBytes, getDownloadURL } from '
 
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCLTqbIw4mGorqYkb92wZk8bfHIumOX94o",
-    authDomain: "test-75b5f.firebaseapp.com",
-    projectId: "test-75b5f",
-    storageBucket: "test-75b5f.appspot.com",
-    messagingSenderId: "824729232108",
-    appId: "1:824729232108:web:f898ba64078f0c6e30bbc9"
+  apiKey: "AIzaSyAfEo-YYE3ubRQtYKXdrga-6dVEcfQ28DA",
+  authDomain: "lehavrebaiedesanges.firebaseapp.com",
+  projectId: "lehavrebaiedesanges",
+  storageBucket: "lehavrebaiedesanges.appspot.com",
+  messagingSenderId: "595254873813",
+  appId: "1:595254873813:web:59895e20dd23ff7ca75c5c",
+  measurementId: "G-K9CZ82377L"
 };
 
-const fetchEscaleData = async (setEscaleData: (arg0: any[]) => void) => {
+const fetchEscaleData = async (setEscaleData: (arg0: Article[]) => void) => {
 
     const app = initializeApp(firebaseConfig);
     const firestore = getFirestore(app);
@@ -26,8 +27,23 @@ const fetchEscaleData = async (setEscaleData: (arg0: any[]) => void) => {
         id: doc.id,
         ...doc.data()
     }));
-    setEscaleData(escaleDataArray);
-    setData(escaleDataArray);
+    console.log(escaleDataArray)
+    const arrayOfArticles: Article[] = escaleDataArray.map((item: any) => {
+      return {
+        nameArticle: item.nameArticle,
+        contenuArticleParagraphe: item.contenuArticleParagraphe,
+        imgPreview: item.imgPreview,
+        nomVille: item.nomVille,
+        date:(item.date as Timestamp).toDate()
+      };
+    });
+    const filteredArticles = arrayOfArticles.sort((a, b) => {
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+      return dateA.getTime() - dateB.getTime();
+  });
+    setEscaleData(filteredArticles);
+    setData(filteredArticles);
 };
 
 const getAllComments = async (nom:string,setComments: (arg0: Comments[]) => void) => {
@@ -113,10 +129,11 @@ const upload = async (image:File,myList:MixedList[],nomArticle:string,nomVille:s
       }
     
       const newDocumentData = {
-        NomArticle: nomArticle,
+        nameArticle: nomArticle,
         contenuArticleParagraphe: parList,
         nomVille: nomVille,
-        imgPreview: downloadURL
+        imgPreview: downloadURL,
+        date: new Date()
       };
       await setDoc(
         doc(firestore, 'escale', nomVille.toLowerCase().replace(/[^a-z0-9]/g, '')),

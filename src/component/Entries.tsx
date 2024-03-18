@@ -41,7 +41,7 @@ const Entries: React.FC = () => {
                     <CardContent>
                       <Typography variant="body2" color="text.secondary" component="p">
                         {data.nomVille}
-                        {data.NomArticle}
+                        {data.nameArticle || ""}
                       </Typography>
                     </CardContent>
                   </Card>

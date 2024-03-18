@@ -1,4 +1,4 @@
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { getData } from '../store/store';
 import { useEffect, useState } from "react";
 import { Box, Grid, TextField } from "@mui/material";
@@ -7,12 +7,20 @@ import 'firebase/firestore';
 import SendIcon from '@mui/icons-material/Send';
 import './Article.css';
 import HomeIcon from '@mui/icons-material/Home';
-import { getAllComments, saveComment } from "../store/firebase";
+import { fetchEscaleData, getAllComments, saveComment } from "../store/firebase";
 
 interface Comments{
   author : string,
   comment: string,
   idArticle: string,
+  date:Date
+}
+
+interface Article{
+  nameArticle: string,
+  contenuArticleParagraphe:any[],
+  imgPreview:string,
+  nomVille:string,
   date:Date
 }
 
@@ -22,40 +30,45 @@ const Article: React.FC = () => {
   const [author,setAuthor] = useState<string>('');
 
   
-  const [data, setData] = useState<{
-    NomArticle: any; 
-    ontenuArticleParagraphe:any;
-    imgPreview:any;
-    nomVille:any;
-  }>({
-    NomArticle: "",
-    ontenuArticleParagraphe: null,
-    imgPreview: null,
-    nomVille: ""
+  const [data, setData] = useState<Article>({
+    nameArticle: "",
+    contenuArticleParagraphe: [],
+    imgPreview: "",
+    nomVille: "",
+    date:new Date()
 }); 
     const [searchParams] = useSearchParams();
     const index = searchParams.get("index");
-    const [name,setName] = useState<string>('');
-    const [par, setPar] = useState<string[]>();
     const [comments, setComments] = useState<Comments[]>();
-              
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const [datas, setDatas] = useState<Article[]>([]);
+
+    fetchEscaleData(setDatas);
+
     useEffect(() => {
-        let datas : any[]= getData();
-        setData(datas[parseInt(index!)]);
+      
+      if (index) {
+        localStorage.setItem('articleIndex', index);
+      } else {
+        const storedIndex = localStorage.getItem('articleIndex');
+        if (storedIndex) {
+          queryParams.set("index", storedIndex);
+        }
+      }
+      
+      let datas : Article[]= getData();
+      setData(datas[parseInt(index!)]);
         
-    }, [index]);
+    }, [index,datas]);
+
 
     useEffect(()=>{
-      display(data);
-      getAllComments(data.NomArticle, setComments);
+      try{
+        getAllComments(data.nameArticle, setComments);
+      }catch(e:any){}
     },[data]);
       
-
-
-    const display = (data:any) =>{
-        setName(data.NomArticle);
-        setPar(data.contenuArticleParagraphe);
-    }
 
     const getHTML = (paragraphe: string) => {
         if (paragraphe.startsWith("http")) {
@@ -67,12 +80,14 @@ const Article: React.FC = () => {
     
 
     const handleComment = async () => {
-      let nom = data.NomArticle || "";
-      try{await saveComment(nom,author,comment,new Date());
-      getAllComments(data.NomArticle, setComments);
-      setComment('');
-      setAuthor('');
+     
+      try{await saveComment(data.nameArticle,author,comment,new Date());
+        getAllComments(data.nameArticle, setComments);
+        setComment('');
+        setAuthor('');
       }catch(e:any){}
+      
+
     };
 
     
@@ -95,11 +110,15 @@ const Article: React.FC = () => {
               </Link>
             </Grid>
             <Grid item xs={8} style={{ overflow: 'auto', maxHeight: '100vh'  }}>
-            <img src={data.imgPreview} style={{ width: "100%", height: "20vh", objectFit: 'cover' }} alt="Article" className="article-image" />
-            <h1 style={{fontSize:"3rem", textAlign:"center", padding:"1vw"}}>{name}</h1>
+            {data && data.imgPreview && <img src={data.imgPreview} style={{ width: "100%", height: "20vh", objectFit: 'cover' }} alt="Article" className="article-image" />}
+            {data && (
+  <h1 style={{ fontSize: "3rem", textAlign: "center", padding: "1vw" }}>
+    {data.nameArticle || ""}
+  </h1>
+)}
             <br />
-            {par &&
-                        par.map((paragraphe, index) => (
+            {data &&
+                        data.contenuArticleParagraphe.map((paragraphe, index) => (
                           <><br /><div key={index}>{getHTML(paragraphe)}</div></>
                         ))}
             </Grid>

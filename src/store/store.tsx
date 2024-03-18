@@ -1,6 +1,8 @@
-let store: any[] = [];
+import Article from "../page/Article";
 
-const setData = (data: any[]) => {
+let store: Article[] = [];
+
+const setData = (data: Article[]) => {
   store = data;
 };
 

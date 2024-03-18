@@ -37,7 +37,7 @@ const PwdAdd: React.FC<PwdAddProps> = (props) => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button className='submit' onClick={handleSubmit}>Submit</button>
+          <button className='submit' onClick={handleSubmit}>Valider</button>
          
         </div>
     </div>

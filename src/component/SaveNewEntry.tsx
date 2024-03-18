@@ -16,7 +16,7 @@ export type MixedList = string | File;
 const NewEntry: React.FC<NewEntryProps> = (props) => {
   
     const [nomVille,setNomVille] = useState<string>('');
-    const [NomArticle,setNomArticle] = useState<string>('');
+    const [nameArticle,setNameArticle] = useState<string>('');
 
     const [myList, setMyList] = useState<MixedList[]>([]);
 
@@ -55,7 +55,7 @@ const NewEntry: React.FC<NewEntryProps> = (props) => {
 
     const handleUpload = async () =>{
       try{
-        await upload(image!,myList,NomArticle,nomVille);
+        await upload(image!,myList,nameArticle,nomVille);
         props.closeModal();
       }catch(error){}
       
@@ -106,8 +106,8 @@ const NewEntry: React.FC<NewEntryProps> = (props) => {
             </Grid>
           )}
           <Grid item xs={12}>
-            <label htmlFor="NomArticle">Nom article:</label>
-            <input type="text" value={NomArticle} onChange={(e) => setNomArticle(e.target.value)} />
+            <label htmlFor="nameArticle">Nom article:</label>
+            <input type="text" value={nameArticle} onChange={(e) => setNameArticle(e.target.value)} />
           </Grid>
         </Grid>
         <input type="file" onChange={addImage} />

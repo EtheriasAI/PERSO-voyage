@@ -12,7 +12,6 @@ const Home: React.FC = () => {
   const [pwdAddModal, setPwdAddModal] = React.useState(false);
 
   let dateTime = new Date()
-  console.log(dateTime)
 
   return(
     <div className="App">

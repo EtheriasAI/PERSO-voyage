@@ -21,7 +21,6 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={passwordCorrect ? <Home /> : <Navigate to="/password" />} />
-          <Route path="/article" element={<Article />} />*
           <Route path="/" element={<Home />} />
           <Route path="/article" element={passwordCorrect ? <Article /> : <Navigate to="/password" />} />
           <Route path="/password" element={<PasswordPage setPasswordCorrect={setPasswordCorrect} />} />
