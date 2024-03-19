@@ -14,6 +14,7 @@ const Map = () => {
             [49.48984518226985, 0.09760311177538679],   // Paris
             [49.93127439459951, -1.529519326942444],  // London
             [48.5067048744209, -5.5456321805048665], // New York
+            [43.871604293635166, -2.3604902065242763],
             [43.48296010686958, -10.194995140040248],// Los Angeles
             [35.94577427985918, -11.238332662542154], // Tokyo
             [36.13325291966876, -1.577800046783766],
@@ -22,13 +23,11 @@ const Map = () => {
             [43.63531563997076, 7.139019305600198],
           ];
       
-          // Create an array of LatLng objects from the points
+          
           const latLngPoints = points.map(point => L.latLng(point[0], point[1]));
       
-          // Create a polyline with the points
-          const polyline = L.polyline(latLngPoints, { color: 'red' }).addTo(map);
+          const polyline = L.polyline(latLngPoints, { color: 'orange', dashArray: '10, 10' }).addTo(map);
       
-          // Fit the bounds of the map to the polyline
           map.fitBounds(polyline.getBounds());
       
 

@@ -21,9 +21,19 @@ const Home: React.FC = () => {
         <div className="lower-half">
           <div className="presentation">
           <div className="text">
+            <h2>VOYAGE LE HAVRE TO MARINA BAIE DES ANGES</h2>
+            <br/>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam convallis nibh eu convallis posuere.
-              Integer sit amet tempor nulla. Quisque gravida vehicula orci, nec commodo elit placerat at.
+              
+Le but de ce voyage est de rejoindre le nouveau port d'attache du voilier FATU HIVA.
+Ce  voyage est également l'occasion de partager des moments sous voile et de découvrir d'autres paysages que ceux habituellement découverts depuis l'achat de FATU HIVA.
+Parmis vous, j'ai eu un certain nombre d'équipiers à bord de mon bateau et ce voyage sera je l'espère l'occasion pour vous, de rembarquer à bord sur une partie de ce voyage. Difficile pour moi de prévoir où je serais à tel ou tel moment, c'est la raison de la création de ce blog, afin de pouvoir suivre l'avancement du  bateau et de convenir d'un éventuel embarquement ou débarquement pour d'éventuels coéquipiers.
+Ce blog servira également de support pour  les photos et commentaires de ce voyage, et je l'espère de vos réactions.
+
+Aujourd'hui c'est le début de l'aventure, le bateau est fin prêt dans les starting blocks, et le départ sera normalement effectué samedi 23 mars.
+Nous devons démarrer ce périple à 3, José Alban et moi même.
+
+En attendant le départ, à bientôt et bon vent.
             </p>
           </div>
           <div className="image">

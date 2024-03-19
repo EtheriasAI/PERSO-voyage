@@ -7,7 +7,7 @@ const PasswordPage = ({ setPasswordCorrect } :any) => {
   const [password, setPassword] = useState('');
   const [redirect, setRedirect] = useState(false);
 
-  const pwd = 'delivery';
+  const pwd = 'fatuhiva';
 
   const handleSubmit = (e:any) => {
     e.preventDefault();
@@ -25,17 +25,17 @@ const PasswordPage = ({ setPasswordCorrect } :any) => {
   }
 
   return (
-    <div>
-      <h2>Entrer le mot de passe</h2>
-      <form onSubmit={handleSubmit}>
-        <input
+    <div className='password'>
+      <div className='modal'>
+        <h2>Entrer le mot de passe</h2>        
+        <input className='mdp'
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="Enter password"
+          placeholder="Mot de passe"
         />
-        <button className='submit' type="submit">Submit</button>
-      </form>
+        <button className='submit' onClick={handleSubmit} type="submit">Submit</button>  
+      </div>
     </div>
 
   );

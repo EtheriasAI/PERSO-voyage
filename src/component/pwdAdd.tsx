@@ -14,7 +14,7 @@ interface PwdAddProps {
 const PwdAdd: React.FC<PwdAddProps> = (props) => {
 
     const [password, setPassword] = useState('');
-    let pwd = '1234';
+    let pwd = 'lesoleil';
 
     const handleSubmit = () => {
         if (password === pwd) {

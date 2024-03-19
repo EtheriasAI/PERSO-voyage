@@ -14,7 +14,7 @@
   
   .upper-half {
     height: 70vh;
-    display: flex;
+    display: flex !important;
     justify-content: center;
     align-items: center;
   }
@@ -22,31 +22,47 @@
   .lower-half {
     height:100%;
     .presentation{
-      background-color: #00f;
-      .container {
-        display: flex;
-        height: 40vh;
-      }
-      
+      display: flex;
+      background: linear-gradient(180deg, #2382ff, #aa00ff);
+
       .text {
-        flex: 1; /* Take up remaining space */
-        padding: 20px;
+        flex: 5 !important; 
+        padding: 10vw;
+        justify-content: center; 
+        display: flex;
+        flex-direction: column;
+        align-items: center; 
+        color:white;
+        
+        p{
+          text-align:justify;
+          font-weight: bold;
+          font-family: system-ui;
+        }
+        h2{
+          text-align: center;
+          font-size: 2rem;
+          padding: 1vw;
+        }
       }
       
       .image {
+        justify-content: center; 
+        align-items: center; 
+        display: flex;
+        flex:5 !important;
+        text-align: center;
         padding: 20px;
       }
       
       .image img {
         border-radius: 50%; /* Make the image round */
-        width: 100px; /* Adjust the width as needed */
-        height: 100px; /* Adjust the height as needed */
+        width:25vw;
+        height: 25vw;
       }
     }
   }
-  position: absolute;
-    top: 0;
-    bottom: 0;
+
   .add{
     transition: transform 0.3s ease;
   }
@@ -63,5 +79,15 @@
   }
   to {
     opacity: 1; 
+  }
+}
+
+@media (max-width: 1000px){
+  .App {    
+    .lower-half {
+      .presentation{
+        display: block;
+      }    
+    }    
   }
 }
