@@ -5,17 +5,27 @@ import firebase from 'firebase/compat/app';
 import { getFirestore , doc , setDoc , collection , getDocs, Timestamp } from 'firebase/firestore';
 import { MixedList } from "../component/SaveNewEntry";
 import { getStorage, ref as storageRefBug , uploadBytes, getDownloadURL } from 'firebase/storage';
+// @ts-ignore
+import CryptoJS from 'crypto-js';
+
+const firebaseConfig : {
+  apiKey: string,
+  authDomain: string,
+  projectId: string,
+  storageBucket: string,
+  messagingSenderId: string,
+  appId: string,
+  measurementId: string
+} = decryptData("U2FsdGVkX1+Z7f2pC5KYPFCISetpC6T/GXuoLJ0h71GxF45+87XKusyXUBrWYtaZT4xfdtbg7EEqmKeOWkwSQq4p426m+ZdiMNhu/3G97nCGdGAivDhPJxtfsuxnKnINBPndIbsiXjJhH+Gf/vM6keG2K2bLvDP8puIWx4ICtPssT1wkbwrebOWEn6sZQ4POTS9dAxH0jsOxSa5+xCXB5QOD5sxI2Wo71bbiCAOj2iT7J3a/3Py/w/LPvjjkmd01YpZHp3kFjaGrLNgZXiu0skmXFproI1kWl/987jmrdyLQCT4ykfEkecBVYSkMexTJtGny5kSyfmQYVReCDRmeKCVS/txrA4Kt2I92A5zwkUPeZtEAhK8+sisn1m3uD9er+0LbK7z4+x7xiVStHULNasWUR6XCltoUz7E5mriaDRWhSjVZ4tFYkdOUy48sZ8Sa");
 
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAfEo-YYE3ubRQtYKXdrga-6dVEcfQ28DA",
-  authDomain: "lehavrebaiedesanges.firebaseapp.com",
-  projectId: "lehavrebaiedesanges",
-  storageBucket: "lehavrebaiedesanges.appspot.com",
-  messagingSenderId: "595254873813",
-  appId: "1:595254873813:web:59895e20dd23ff7ca75c5c",
-  measurementId: "G-K9CZ82377L"
-};
+
+function decryptData(encryptedData:string) {
+  const key ="7699a511088eb50804596981684ab8bb";
+  const decryptedBytes = CryptoJS.AES.decrypt(encryptedData, key);
+  const decryptedData = decryptedBytes.toString(CryptoJS.enc.Utf8);
+  return JSON.parse(decryptedData);
+}
 
 const fetchEscaleData = async (setEscaleData: (arg0: Article[]) => void) => {
 
@@ -146,4 +156,4 @@ const upload = async (image:File,myList:MixedList[],nomArticle:string,nomVille:s
 
 }
 
-export { getAllComments , fetchEscaleData , saveComment , upload }
+export { getAllComments , decryptData , fetchEscaleData , saveComment , upload }

@@ -88,7 +88,7 @@ const NewEntry: React.FC<NewEntryProps> = (props) => {
     const handleDelete = (index2delete:any)=>{
       setMyList(prevList => prevList.filter((_, index) => index !== index2delete));
     }
-    
+
     return (
       <div className='newEntryModal'>
         <div className="content">

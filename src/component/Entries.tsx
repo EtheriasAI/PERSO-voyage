@@ -33,7 +33,7 @@ const Entries: React.FC<EntryProps> = (props) => {
           <h1 style={{ textAlign: "center", margin:"1vw" }}>Consulter les étapes :</h1>
           <Grid container spacing={3} justifyContent="space-evenly" style={{padding:"1vw"}}>
             {escaleData.map((data, index) => (
-              <Grid item key={index} xs={3} sx={{ animation: 'fadeInFromBottom 1s ease forwards',}}>
+              <Grid item key={index} xs={3} className="cardsLink" sx={{ animation: 'fadeInFromBottom 1s ease forwards',}}>
                 <Link to={`/article?index=${index}`} style={{ textDecoration: 'none' }}>
                   <Card className="cards"
                   sx={{ maxWidth: 345, m: 2,
@@ -44,11 +44,11 @@ const Entries: React.FC<EntryProps> = (props) => {
                     } }}>
                     <CardMedia
                       component="img"
-                      height="140"
+                      sx={{ height:'100%' }}
                       image={data.imgPreview}
                       alt="Nicola Sturgeon on a TED talk stage"
                     />
-                    <CardContent>
+                    <CardContent sx={{ height:'100%' }}>
                       <Typography variant="body2" color="text.secondary" component="p">
                         {data.nomVille}
                         {data.nameArticle || ""}

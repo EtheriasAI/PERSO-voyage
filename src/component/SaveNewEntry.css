@@ -59,7 +59,7 @@
     
         .inputArticle{
             height:30vh;
-            overflow-y: none;
+            overflow-y: auto;
             input{
                 width:66vw;
             }

@@ -46,6 +46,51 @@
   }
 }
 
+@media (max-width: 1285px) {
+
+  .home {
+    position:fixed;
+    top:0;
+    margin: 10px;
+  }
+
+  .article{
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    max-width: 100%;
+    width: 100vw;
+    
+  }
+  .contentArticle{
+    overflow: unset !important;
+    height: fit-content !important;
+    max-height: none !important;
+  }
+
+  .divSendComment{
+    position: static !important;
+  }
+
+  .gridComments{
+    overflow: unset !important;
+    height: fit-content;
+  }
+
+  .comments {
+    overflow: unset !important;
+    display: flex;
+    flex-direction: column-reverse !important;
+    background-color: #eee;
+    top: 0;
+    height: fit-content !important;
+    overflow-x: hidden !important;
+  }
+  
+  .comment-wrapper {
+    flex: 1;
+  }
+}
+
 /*scrollbar*/
 
 ::-webkit-scrollbar {

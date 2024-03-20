@@ -2,12 +2,13 @@
 import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import './Password.css'
+import { decryptData } from '../store/firebase';
 
 const PasswordPage = ({ setPasswordCorrect } :any) => {
   const [password, setPassword] = useState('');
   const [redirect, setRedirect] = useState(false);
 
-  const pwd = 'fatuhiva';
+  const pwd = decryptData('U2FsdGVkX1/ceV2INAvmJ3kWAA9f73/GgyVW7ZaYS6A=');
 
   const handleSubmit = (e:any) => {
     e.preventDefault();

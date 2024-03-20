@@ -29,39 +29,42 @@ const Article: React.FC = () => {
   const [comment,setComment] = useState<string>('');
   const [author,setAuthor] = useState<string>('');
 
-  
   const [data, setData] = useState<Article>({
     nameArticle: "",
     contenuArticleParagraphe: [],
     imgPreview: "",
     nomVille: "",
     date:new Date()
-}); 
-    const [searchParams] = useSearchParams();
-    const index = searchParams.get("index");
-    const [comments, setComments] = useState<Comments[]>();
-    const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
-    const [datas, setDatas] = useState<Article[]>([]);
+  }); 
+  
+  const [searchParams] = useSearchParams();
+  const index = searchParams.get("index");
+  const [comments, setComments] = useState<Comments[]>();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const [datas, setDatas] = useState<Article[]>([]);
 
+  useEffect(() => {
     fetchEscaleData(setDatas);
+  }, []);
 
-    useEffect(() => {
+  useEffect(() => {
       
-      if (index) {
-        localStorage.setItem('articleIndex', index);
-      } else {
-        const storedIndex = localStorage.getItem('articleIndex');
-        if (storedIndex) {
-          queryParams.set("index", storedIndex);
-        }
-      }
-      
-      let datas : Article[]= getData();
-      setData(datas[parseInt(index!)]);
+  if (index) {
+    localStorage.setItem('articleIndex', index);
+  } else {
+    const storedIndex = localStorage.getItem('articleIndex');
+    if (storedIndex) {
+      queryParams.set("index", storedIndex);
+    }
+  }
+  
+  let datas: Article[] = getData();
+  setData(datas[parseInt(index!)]);
+  
+
         
     }, [index,datas]);
-
 
     useEffect(()=>{
       try{
@@ -78,7 +81,6 @@ const Article: React.FC = () => {
         }
     };
     
-
     const handleComment = async () => {
      
       try{await saveComment(data.nameArticle,author,comment,new Date());
@@ -92,14 +94,13 @@ const Article: React.FC = () => {
 
     
     const formatDateTime = (date: Date): string => {
-      console.log(date)
       const month = (date.getMonth() + 1).toString().padStart(2, '0');
       const day = date.getDate().toString().padStart(2, '0');
       const hour = date.getHours().toString().padStart(2, '0');
       const minute = date.getMinutes().toString().padStart(2, '0');
   
       return `${month}/${day} ${hour}:${minute}`;
-  };
+    };
 
     return (
         
@@ -109,20 +110,20 @@ const Article: React.FC = () => {
                 <button className="home" style={{ borderRadius: '50%', cursor: 'pointer', backgroundColor: '#e0e0e0', border: 'none' }}><HomeIcon style={{fontSize:"50px",color:"#fff",padding:"5px"}} /></button>
               </Link>
             </Grid>
-            <Grid item xs={8} style={{ overflow: 'auto', maxHeight: '100vh'  }}>
+            <Grid item xs={12} lg={8} className="contentArticle" style={{ overflow: 'auto', maxHeight: '100vh'  }}>
             {data && data.imgPreview && <img src={data.imgPreview} style={{ width: "100%", height: "20vh", objectFit: 'cover' }} alt="Article" className="article-image" />}
             {data && (
-  <h1 style={{ fontSize: "3rem", textAlign: "center", padding: "1vw" }}>
-    {data.nameArticle || ""}
-  </h1>
-)}
+              <h1 style={{ fontSize: "3rem", textAlign: "center", padding: "1vw" }}>
+                {data.nameArticle || ""}
+              </h1>
+            )}
             <br />
             {data &&
                         data.contenuArticleParagraphe.map((paragraphe, index) => (
                           <><br /><div key={index}>{getHTML(paragraphe)}</div></>
                         ))}
             </Grid>
-            <Grid item xs={4} style={{ maxHeight: '100vh', overflow: 'hidden', position: "relative" , display: "flex", flexDirection: "column"}}>
+            <Grid className="gridComments" item xs={12} lg={4} style={{ maxHeight: '100vh', overflow: 'hidden', position: "relative" , display: "flex", flexDirection: "column"}}>
                     <Box className='comments' height="100vh">
                           <div style={{overflow:"auto", maxHeight:"80vh"}}>
                           {comments &&
@@ -140,7 +141,7 @@ const Article: React.FC = () => {
                                       </div>
                                     ))}
                           </div>
-                      <Grid style={{ position: "absolute", bottom: 0, right:0, left:0}}>
+                      <Grid className="divSendComment" style={{ position: "absolute", bottom: 0, right:0, left:0}}>
                         <div className="sendComment">
                           <Grid item xs={12} style={{marginBottom:"1vh"}}>
                             <Grid container alignItems="stretch">
