@@ -37,7 +37,7 @@ En attendant le départ, à bientôt et bon vent.
             </p>
           </div>
           <div className="image">
-            <img src="foto1.jpeg" alt="Round Picture" />
+            <img src="foto1.jpg" alt="Round Picture" />
           </div>
           </div>
           <Entries refresh={() => setRefresh(false)} rValue={refresh} />
